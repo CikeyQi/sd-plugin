@@ -1,2 +1,5 @@
 api_list: []
 use_api: 0
+translate:
+  appid: ""
+  appkey: ""
