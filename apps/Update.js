@@ -16,7 +16,7 @@ let uping = false
 export class update extends plugin {
   constructor () {
     super({
-      name: 'Nai-更新插件',
+      name: 'SD-更新插件',
       event: 'message',
       priority: 1009,
       rule: [

@@ -39,6 +39,31 @@ class Config {
       return false
     }
   }
+
+  getDefDrawParams() {
+    try {
+      const def_draw_param = YAML.parse(
+          fs.readFileSync(`${pluginRoot}/config/config/def_draw_params.yaml`, 'utf-8')
+      )
+      return def_draw_param
+    } catch (err) {
+      console.error('[SD-PLUGIN] 读取def_draw_params.yaml失败', err)
+      return false
+    }
+  }
+  setDefDrawParams(param) {
+    try {
+      fs.writeFileSync(
+          `${pluginRoot}/config/config/def_draw_params.yaml`,
+          YAML.stringify(param),
+          'utf-8'
+      )
+      return true
+    } catch (err) {
+      console.error('[SD-PLUGIN] 写入def_draw_params.yaml失败', err)
+      return false
+    }
+  }
 }
 
 export default new Config()

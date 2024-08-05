@@ -18,6 +18,11 @@ class Init {
       console.error('[SD-PLUGIN] 设置文件不存在，将使用默认设置文件')
       fs.copyFileSync(config_default_path, config_path)
     }
+    const draw_param_path = `${pluginRoot}/config/config/def_draw_params.yaml`
+    if (!fs.existsSync(draw_param_path)) {
+      console.error('[SD-PLUGIN] 默认绘图参数文件不存在，将自动创建')
+      fs.writeFileSync(draw_param_path,"","utf-8")
+    }
     const config_default_yaml = Config.getDefConfig()
     const config_yaml = Config.getConfig()
     for (const key in config_default_yaml) {

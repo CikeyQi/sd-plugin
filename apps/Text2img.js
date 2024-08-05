@@ -2,6 +2,8 @@ import plugin from '../../../lib/plugins/plugin.js'
 import { parseCommandString } from '../utils/utils.js';
 import { translate } from '../utils/translate.js';
 import { nsfwCheck } from '../utils/nsfw.js';
+import YAML from 'yaml';
+import Config from "../components/Config.js";
 import Code from '../components/Core.js';
 
 export class Text2img extends plugin {
@@ -27,7 +29,11 @@ export class Text2img extends plugin {
 
   async text2img(e) {
     // 解析命令
-    const params = await parseCommandString(e.msg);
+    const parsedParams = await parseCommandString(e.msg);
+
+    // 合并参数
+    const defDrawParams = Config.getDefDrawParams() || {}
+    const params = {...defDrawParams, ...parsedParams}
 
     // 翻译
     if (params.prompt) {
@@ -48,9 +54,7 @@ export class Text2img extends plugin {
 
       await e.reply(segment.image('base64://' + result.data.images[0]));
 
-      const message = Object.entries(result.data.parameters)
-      .map(([key, value]) => `${key}: ${value}`)
-      .join('\n');
+      const message = YAML.stringify(result.data.parameters)
 
       await e.reply(Bot.makeForwardMsg([{ message }]));
     } else {
