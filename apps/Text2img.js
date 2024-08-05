@@ -1,6 +1,7 @@
 import plugin from '../../../lib/plugins/plugin.js'
 import { parseCommandString } from '../utils/utils.js';
 import { translate } from '../utils/translate.js';
+import { nsfwCheck } from '../utils/nsfw.js';
 import Code from '../components/Core.js';
 
 export class Text2img extends plugin {
@@ -38,6 +39,13 @@ export class Text2img extends plugin {
 
     // 处理响应
     if (result.status) {
+      let isNsfw = await nsfwCheck(result.data.images[0]);
+
+      if (!isNsfw.status) {
+        await e.reply(`生成图片未通过审核，${isNsfw.msg}`);
+        return true;
+      }
+
       await e.reply(segment.image('base64://' + result.data.images[0]));
 
       const message = Object.entries(result.data.parameters)

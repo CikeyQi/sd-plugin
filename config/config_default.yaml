@@ -3,3 +3,7 @@ use_api: 0
 translate:
   appid: ""
   appkey: ""
+nsfw_check:
+  enable: false
+  appid: ""
+  apikey: ""
