@@ -39,6 +39,12 @@ export class Text2img extends plugin {
     // 处理响应
     if (result.status) {
       await e.reply(segment.image('base64://' + result.data.images[0]));
+
+      const message = Object.entries(result.data.parameters)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join('\n');
+
+      await e.reply(Bot.makeForwardMsg([{ message }]));
     } else {
       await e.reply(result.msg);
     }
