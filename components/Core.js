@@ -38,7 +38,11 @@ class Code {
             return { status: true, data: response.data }
         } catch (error) {
             console.error('[SD-PLUGIN] 文生图接口调用失败:\n', error);
-            return { status: false, msg: error.message }
+            if (error.response) {
+                return { status: false, msg: error.response.data.detail }
+            } else {
+                return { status: false, msg: error.message }
+            }
         }
     }
 
@@ -62,6 +66,11 @@ class Code {
             return { status: true, data: response.data }
         } catch (error) {
             console.error('[SD-PLUGIN] 图生图接口调用失败:\n', error);
+            if (error.response) {
+                return { status: false, msg: error.response.data.detail }
+            } else {
+                return { status: false, msg: error.message }
+            }
         }
     }
 }
