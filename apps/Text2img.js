@@ -1,10 +1,10 @@
 import plugin from '../../../lib/plugins/plugin.js'
 import { parseCommandString } from '../utils/utils.js';
 import { translate } from '../utils/translate.js';
+import { getParams } from '../utils/param.js';
 import { nsfwCheck } from '../utils/nsfw.js';
-import YAML from 'yaml';
-import Config from "../components/Config.js";
 import Code from '../components/Core.js';
+import YAML from 'yaml';
 
 export class Text2img extends plugin {
   constructor() {
@@ -19,7 +19,7 @@ export class Text2img extends plugin {
       rule: [
         {
           /** 命令正则匹配 */
-          reg: '^#?(绘图|咏唱|draw)([\\s\\S]*)$',
+          reg: '^#?draw([\\s\\S]*)$',
           /** 执行方法 */
           fnc: 'text2img'
         }
@@ -28,12 +28,9 @@ export class Text2img extends plugin {
   }
 
   async text2img(e) {
-    // 解析命令
-    const parsedParams = await parseCommandString(e.msg);
 
-    // 合并参数
-    const defDrawParams = Config.getDefDrawParams() || {}
-    const params = {...defDrawParams, ...parsedParams}
+    // 获取参数
+    const params = await getParams(e, await parseCommandString(e.msg));
 
     // 翻译
     if (params.prompt) {
