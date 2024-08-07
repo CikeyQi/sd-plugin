@@ -37,7 +37,7 @@ export class Model extends plugin {
                 } else {
                     await e.reply(modelsRes.msg || configRes.msg);
                 }
-            } else if ('set' in params && isMaster) {
+            } else if ('set' in params && e.isMaster) {
                 // 处理设置模型的请求
                 const modelsRes = await Code.getModels();
                 if (modelsRes.status) {
@@ -50,7 +50,7 @@ export class Model extends plugin {
                 } else {
                     await e.reply(`获取模型列表失败：${modelsRes.msg}`);
                 }
-            } else if ('refresh' in params && isMaster) {
+            } else if ('refresh' in params && e.isMaster) {
                 // 处理刷新模型的请求
                 const refreshRes = await Code.refreshModel();
                 await e.reply(refreshRes.status ? '模型列表已刷新' : `刷新模型列表失败：${msg}`);
@@ -79,7 +79,7 @@ export class Model extends plugin {
                 } else {
                     await e.reply(modelsRes.msg || configRes.msg);
                 }
-            } else if ('set' in params && isMaster) {
+            } else if ('set' in params && e.isMaster) {
                 // 处理设置模型的请求
                 const modelsRes = await Code.getVaes();
                 if (modelsRes.status) {
@@ -92,7 +92,7 @@ export class Model extends plugin {
                 } else {
                     await e.reply(`获取VAE列表失败：${modelsRes.msg}`);
                 }
-            } else if ('refresh' in params && isMaster) {
+            } else if ('refresh' in params && e.isMaster) {
                 // 处理刷新模型的请求
                 const refreshRes = await Code.refreshVae();
                 await e.reply(refreshRes.status ? 'VAE列表已刷新' : `刷新VAE列表失败：${msg}`);
