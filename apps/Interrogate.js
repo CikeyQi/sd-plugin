@@ -29,13 +29,13 @@ export class Interrogate extends plugin {
 
             const getInfo = async () => {
                 const result = await Code.getInfo(params);
-                return result.data.info ? e.reply(YAML.stringify(result.data.parameters)) : getTags();
+                return result.data.info ? e.reply(Bot.makeForwardMsg([{ message: YAML.stringify(result.data.parameters) }])) : getTags();
             };
 
             const getTags = async () => {
                 Object.assign(params, { model: params.model || 'wd14-vit-v2-git', threshold: params.threshold || 0.35 });
                 const result = await Code.getTags(params);
-                return result.status ? e.reply(Object.keys(result.data.caption).join(",")) : e.reply(result.msg);
+                return result.status ? e.reply(Bot.makeForwardMsg([{ message: Object.keys(result.data.caption).join(",") }])) : e.reply(result.msg);
             };
 
             if ('tags' in params) await getTags();
