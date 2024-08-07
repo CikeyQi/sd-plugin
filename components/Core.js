@@ -303,7 +303,7 @@ class Code {
         const { baseurl, username, password } = await this.getBase();
         // 发送请求
         try {
-            const response = await axios.post(`${baseurl}/sdapi/v1/interrogate`, params, {
+            const response = await axios.post(`${baseurl}/tagger/v1/interrogate`, params, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`

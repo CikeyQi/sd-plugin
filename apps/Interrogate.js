@@ -1,6 +1,7 @@
 import plugin from '../../../lib/plugins/plugin.js';
 import { parseCommandString, url2Base64 } from '../utils/utils.js';
 import Code from '../components/Core.js';
+import YAML from 'yaml';
 
 export class Interrogate extends plugin {
     constructor() {
@@ -28,7 +29,7 @@ export class Interrogate extends plugin {
 
             const getInfo = async () => {
                 const result = await Code.getInfo(params);
-                return result.data.info ? e.reply(result.data.info) : getTags();
+                return result.data.info ? e.reply(YAML.stringify(result.data.parameters)) : getTags();
             };
 
             const getTags = async () => {
@@ -42,8 +43,8 @@ export class Interrogate extends plugin {
             else await getInfo();
 
         } catch (error) {
-            console.error('[SD-PLUGIN] 图像超分失败:', error);
-            await e.reply('图像超分过程中发生错误，请查看控制台信息');
+            console.error('[SD-PLUGIN] 图像鉴赏失败:', error);
+            await e.reply('图像鉴赏过程中发生错误，请查看控制台信息');
         }
         return true;
     }
