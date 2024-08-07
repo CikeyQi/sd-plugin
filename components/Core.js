@@ -236,6 +236,35 @@ class Code {
             }
         }
     }
+
+    /**
+     * 超分图像
+     * @param {*} params 参数
+     * @returns 基础信息
+     */
+    async upscale(params) {
+        // 获取接口
+        const { baseurl, username, password } = await this.getBase();
+        // 发送请求
+        try {
+            const response = await axios.post(`${baseurl}/sdapi/v1/extra-single-image`, params, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
+                }
+            });
+
+            return { status: true, data: response.data }
+        } catch (error) {
+            console.error('[SD-PLUGIN] 超分图像失败:\n', error);
+            if (error.response) {
+                return { status: false, msg: error.response.data.detail }
+            } else {
+                return { status: false, msg: error.message }
+            }
+        }
+    }
+
 }
 
 export default new Code();

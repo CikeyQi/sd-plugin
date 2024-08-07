@@ -2,11 +2,11 @@ import plugin from '../../../lib/plugins/plugin.js';
 import { parseCommandString } from '../utils/utils.js';
 import YAML from 'yaml';
 
-export class SetParam extends plugin {
+export class Param extends plugin {
     constructor() {
         super({
             name: 'SD-默认参数',
-            dsc: '参数',
+            dsc: '设置默认参数',
             event: 'message',
             priority: 1009,
             rule: [

@@ -2,7 +2,7 @@ import plugin from '../../../lib/plugins/plugin.js';
 import { parseCommandString } from '../utils/utils.js';
 import Code from '../components/Core.js';
 
-export class SetParam extends plugin {
+export class Model extends plugin {
     constructor() {
         super({
             name: 'SD-模型',
@@ -37,33 +37,23 @@ export class SetParam extends plugin {
                 } else {
                     await e.reply(modelsRes.msg || configRes.msg);
                 }
-            } else if ('set' in params) {
-                if (!e.isMaster) return;
+            } else if ('set' in params && isMaster) {
                 // 处理设置模型的请求
                 const modelsRes = await Code.getModels();
                 if (modelsRes.status) {
                     if (modelsRes.data.some(model => model.title === params.set)) {
                         const setRes = await Code.setConfig({ sd_model_checkpoint: params.set });
-                        if (setRes.status) {
-                            await e.reply(`模型已切换至：${params.set}`);
-                        } else {
-                            await e.reply(`设置模型失败：${setRes.msg}`);
-                        }
+                        await e.reply(setRes.status ? `模型已切换至：${params.set}` : `设置模型失败：${msg}`);
                     } else {
                         await e.reply('指定的模型不存在，请检查模型名称');
                     }
                 } else {
                     await e.reply(`获取模型列表失败：${modelsRes.msg}`);
                 }
-            } else if ('refresh' in params) {
-                if (!e.isMaster) return;
-
+            } else if ('refresh' in params && isMaster) {
+                // 处理刷新模型的请求
                 const refreshRes = await Code.refreshModel();
-                if (refreshRes.status) {
-                    await e.reply('模型列表已刷新');
-                } else {
-                    await e.reply(`刷新模型列表失败：${refreshRes.msg}`);
-                }
+                await e.reply(refreshRes.status ? '模型列表已刷新' : `刷新模型列表失败：${msg}`);
             } else {
                 await e.reply('未知参数，请检查命令格式后再试');
             }
@@ -89,33 +79,23 @@ export class SetParam extends plugin {
                 } else {
                     await e.reply(modelsRes.msg || configRes.msg);
                 }
-            } else if ('set' in params) {
-                if (!e.isMaster) return;
+            } else if ('set' in params && isMaster) {
                 // 处理设置模型的请求
                 const modelsRes = await Code.getVaes();
                 if (modelsRes.status) {
                     if (modelsRes.data.some(model => model.model_name === params.set)) {
                         const setRes = await Code.setConfig({ sd_vae: params.set });
-                        if (setRes.status) {
-                            await e.reply(`VAE已切换至：${params.set}`);
-                        } else {
-                            await e.reply(`设置VAE失败：${setRes.msg}`);
-                        }
+                        await e.reply(setRes.status ? `VAE已切换至：${params.set}` : `设置VAE失败：${msg}`);
                     } else {
                         await e.reply('指定的VAE不存在，请检查VAE名称');
                     }
                 } else {
                     await e.reply(`获取VAE列表失败：${modelsRes.msg}`);
                 }
-            } else if ('refresh' in params) {
-                if (!e.isMaster) return;
-
+            } else if ('refresh' in params && isMaster) {
+                // 处理刷新模型的请求
                 const refreshRes = await Code.refreshVae();
-                if (refreshRes.status) {
-                    await e.reply('VAE列表已刷新');
-                } else {
-                    await e.reply(`刷新VAE列表失败：${refreshRes.msg}`);
-                }
+                await e.reply(refreshRes.status ? 'VAE列表已刷新' : `刷新VAE列表失败：${msg}`);
             } else {
                 await e.reply('未知参数，请检查命令格式后再试');
             }
