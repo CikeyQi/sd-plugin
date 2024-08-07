@@ -265,6 +265,62 @@ class Code {
         }
     }
 
+    /**
+     * 解析图片信息
+     * @param {*} params 参数
+     * @returns 图片信息
+     */
+    async getInfo(params) {
+        // 获取接口
+        const { baseurl, username, password } = await this.getBase();
+        // 发送请求
+        try {
+            const response = await axios.post(`${baseurl}/sdapi/v1/png-info`, params, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
+                }
+            });
+
+            return { status: true, data: response.data }
+        } catch (error) {
+            console.error('[SD-PLUGIN] 获取图片信息失败:\n', error);
+            if (error.response) {
+                return { status: false, msg: error.response.data.detail }
+            } else {
+                return { status: false, msg: error.message }
+            }
+        }
+    }
+
+    /**
+     * 鉴赏图片信息
+     * @param {*} params 参数
+     * @returns 图片信息
+     */
+    async getTags(params) {
+        // 获取接口
+        const { baseurl, username, password } = await this.getBase();
+        // 发送请求
+        try {
+            const response = await axios.post(`${baseurl}/sdapi/v1/interrogate`, params, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
+                }
+            });
+
+            return { status: true, data: response.data }
+        } catch (error) {
+            console.error('[SD-PLUGIN]鉴赏图片信息失败:\n', error);
+            if (error.response) {
+                return { status: false, msg: error.response.data.detail }
+            } else {
+                return { status: false, msg: error.message }
+            }
+        }
+    }
+
 }
 
 export default new Code();
