@@ -38,6 +38,7 @@ export class SetParam extends plugin {
                     await e.reply(modelsRes.msg || configRes.msg);
                 }
             } else if ('set' in params) {
+                if (!e.isMaster) return;
                 // 处理设置模型的请求
                 const modelsRes = await Code.getModels();
                 if (modelsRes.status) {
@@ -53,6 +54,15 @@ export class SetParam extends plugin {
                     }
                 } else {
                     await e.reply(`获取模型列表失败：${modelsRes.msg}`);
+                }
+            } else if ('refresh' in params) {
+                if (!e.isMaster) return;
+
+                const refreshRes = await Code.refreshModel();
+                if (refreshRes.status) {
+                    await e.reply('模型列表已刷新');
+                } else {
+                    await e.reply(`刷新模型列表失败：${refreshRes.msg}`);
                 }
             } else {
                 await e.reply('未知参数，请检查命令格式后再试');
@@ -80,6 +90,7 @@ export class SetParam extends plugin {
                     await e.reply(modelsRes.msg || configRes.msg);
                 }
             } else if ('set' in params) {
+                if (!e.isMaster) return;
                 // 处理设置模型的请求
                 const modelsRes = await Code.getVaes();
                 if (modelsRes.status) {
@@ -95,6 +106,15 @@ export class SetParam extends plugin {
                     }
                 } else {
                     await e.reply(`获取VAE列表失败：${modelsRes.msg}`);
+                }
+            } else if ('refresh' in params) {
+                if (!e.isMaster) return;
+
+                const refreshRes = await Code.refreshVae();
+                if (refreshRes.status) {
+                    await e.reply('VAE列表已刷新');
+                } else {
+                    await e.reply(`刷新VAE列表失败：${refreshRes.msg}`);
                 }
             } else {
                 await e.reply('未知参数，请检查命令格式后再试');

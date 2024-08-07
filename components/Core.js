@@ -183,8 +183,59 @@ class Code {
         }
     }
 
+    /**
+     * 刷新模型
+     * @returns 响应
+     */
+    async refreshModel() {
+        // 获取接口
+        const { baseurl, username, password } = await this.getBase();
+        // 发送请求
+        try {
+            const response = await axios.post(`${baseurl}/sdapi/v1/refresh-checkpoints`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
+                }
+            });
 
+            return { status: true, data: response.data }
+        } catch (error) {
+            console.error('[SD-PLUGIN] 刷新模型失败:\n', error);
+            if (error.response) {
+                return { status: false, msg: error.response.data.detail }
+            } else {
+                return { status: false, msg: error.message }
+            }
+        }
+    }
 
+    /**
+     * 刷新VAE
+     * @returns 响应
+     */
+    async refreshVae() {
+        // 获取接口
+        const { baseurl, username, password } = await this.getBase();
+        // 发送请求
+        try {
+            const response = await axios.post(`${baseurl}/sdapi/v1/refresh-vae`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
+                }
+            });
+
+            return { status: true, data: response.data }
+        } catch (error) {
+            console.error('[SD-PLUGIN] 刷新VAE失败:\n', error);
+            if (error.response) {
+                return { status: false, msg: error.response.data.detail }
+            } else {
+                return { status: false, msg: error.message }
+            }
+        }
+    }
 }
 
 export default new Code();
