@@ -9,18 +9,13 @@ import YAML from 'yaml';
 export class Text2img extends plugin {
   constructor() {
     super({
-      /** 功能名称 */
       name: 'SD-文生图',
-      /** 功能描述 */
-      dsc: '绘画',
+      dsc: '文生图',
       event: 'message',
-      /** 优先级，数字越小等级越高 */
       priority: 1009,
       rule: [
         {
-          /** 命令正则匹配 */
           reg: '^#?draw([\\s\\S]*)$',
-          /** 执行方法 */
           fnc: 'text2img'
         }
       ]
@@ -36,6 +31,8 @@ export class Text2img extends plugin {
     if (params.prompt) {
       params.prompt = await translate(params.prompt);
     }
+
+    await e.reply(`正在生成图片，请稍后...`, true);
 
     // 调用接口
     const result = await Code.text2img(params);

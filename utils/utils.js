@@ -22,15 +22,21 @@ export async function url2Base64(url) {
  * @returns 
  */
 export async function parseCommandString(commandString) {
-    const regex = /--(\w+)\s+((?:"[^"]*")|(\S+))/g;
-    
+
+    const regex = /--(\w+)(?:\s+((?:"[^"]*")|(\S+)))?/g;
+
     let match;
     const result = {};
 
     while ((match = regex.exec(commandString)) !== null) {
         const key = match[1]; // 捕获参数名
-        const value = match[2].replace(/"/g, ''); // 去掉双引号
-        result[key] = value === 'true' || value === 'false' ? value === 'true' : isNaN(value) ? value : Number(value);
+        if (match[2]) {
+            const value = match[2].replace(/"/g, '');
+            result[key] = value === 'true' || value === 'false' ? value === 'true' : isNaN(value) ? value : Number(value);
+        } else {
+            // 如果没有值，则设置为null
+            result[key] = null;
+        }
     }
 
     return result;
